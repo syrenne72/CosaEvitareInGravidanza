@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="i_food">20sp</dimen>
+    <dimen name="m_left_list">10sp</dimen>
+</resources>

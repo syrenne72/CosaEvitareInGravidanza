@@ -6,11 +6,11 @@
     android:orientation="horizontal">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="150sp"
         android:layout_height="wrap_content"
         android:id="@+id/tvFoodName"
         android:layout_gravity="center"
-        android:text="Pesce spada s"
+        android:text="Pesce spada affumicato"
         android:textSize="20sp"/>
 
     <ImageView

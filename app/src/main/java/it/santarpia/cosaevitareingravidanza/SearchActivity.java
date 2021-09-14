@@ -24,6 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 public class SearchActivity extends AppCompatActivity {
     final int sdk = android.os.Build.VERSION.SDK_INT;
 
@@ -32,7 +34,7 @@ public class SearchActivity extends AppCompatActivity {
     private int toxo;
 
     private ListView lvHistory;
-    private EditText etFoodName;
+    private TextInputEditText etFoodName;
     private TextView tvSearchTitle;
     private CursorAdapter adapter;
 

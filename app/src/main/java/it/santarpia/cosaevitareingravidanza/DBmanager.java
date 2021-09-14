@@ -132,20 +132,10 @@ public class DBmanager {
             SQLiteDatabase db = dbhelper.getReadableDatabase();
             crs = db.query(DBstring.TBL_FOOD, null,
                     DBstring.F_FOOD_NAME + " LIKE ? COLLATE NOCASE", new String[]{"%" + name + "%"},
-                    null, null, null, null);
+                    null, null, DBstring.F_FOOD_NAME, null);
 
-            if(crs != null && crs.moveToNext()) {
-                do {
-                    Log.d("kiwi", "Food found");
-
-                    int id = crs.getInt(crs.getColumnIndex(DBstring.F_FOOD_ID));
-                    long time = System.currentTimeMillis();
-
-                    updateFoodTime(id, time);
-                } while (crs.moveToNext());
-            }
-
-            crs.moveToFirst();
+            if(crs != null && crs.moveToNext())
+                Log.d("kiwi", "Foods found");
 
             return crs;
         } catch(SQLiteException sqle) {
@@ -280,7 +270,7 @@ public class DBmanager {
      * @param id id of the food to upgrade
      * @param time time to set
      */
-    private void updateFoodTime(int id, long time) {
+    public void updateFoodTime(int id, long time) {
         Log.d("Kiwi", "Upgrading time of food: " + id + " - " + time);
         SQLiteDatabase db = dbhelper.getReadableDatabase();
 

@@ -11,6 +11,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +54,36 @@ public class SearchActivity extends AppCompatActivity {
         crs = dbmanager.findLastFoodsSearch(10);
 //        Log.d("kiwi", crs.getString(crs.getColumnIndex(DBstring.F_FOOD_NAME)) + "");
         refreshListView();
+
+        //Adding listener for autocomplete
+        etFoodName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                Log.d("kiwi", getClass().getSimpleName() + ": etFoodName: before change");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                Log.d("kiwi", getClass().getSimpleName() + ": etFoodName: on change");
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+//                Log.d("kiwi", getClass().getSimpleName() + ": etFoodName: after change");
+                String food = editable.toString();
+//                Log.d("kiwi", getClass().getSimpleName() + ": etFoodName: text present: " + food);
+
+                if(food.length() > 2) {
+                    crs = dbmanager.findFoodByName(food);
+                    tvSearchTitle.setText("Cibi trovati:");
+                    refreshListView();
+                } else if(food.length() == 0) {
+                    crs = dbmanager.findLastFoodsSearch(10);
+                    tvSearchTitle.setText("Ricerche recenti:");
+                    refreshListView();
+                }
+            }
+        });
     }
 
     /**
@@ -192,6 +224,11 @@ public class SearchActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         Log.d("Kiwi", getClass().getSimpleName() + ": opening new intent for food: " + btnInfo.getTag());
 
+                        //Updating food last time be searched
+                        int id = crs.getInt(crs.getColumnIndex(DBstring.F_FOOD_ID));
+                        long time = System.currentTimeMillis();
+                        dbmanager.updateFoodTime(id, time);
+
                         Intent i = new Intent(getApplicationContext(), FoodInformationActivity.class);
                         i.putExtra("id", btnInfo.getTag().toString());
                         i.putExtra("toxo", toxo);
@@ -210,18 +247,18 @@ public class SearchActivity extends AppCompatActivity {
      * Method called by clicking on search button. Search all foods with specified name
      * @param view search button
      */
-    public void onSearch(View view) {
-        String name = etFoodName.getText().toString();
-
-        if(name.length() > 0 && name != null) {
-            crs = dbmanager.findFoodByName(name);
-
-//            Log.d("Kiwi", getClass().getSimpleName() + ": found food: " + crs.getString(crs.getColumnIndex(DBstring.F_FOOD_NAME)));
-
-            tvSearchTitle.setText("Cibi trovati:");
-            refreshListView();
-        }
-    }
+//    public void onSearch(View view) {
+//        String name = etFoodName.getText().toString();
+//
+//        if(name.length() > 0 && name != null) {
+//            crs = dbmanager.findFoodByName(name);
+//
+////            Log.d("Kiwi", getClass().getSimpleName() + ": found food: " + crs.getString(crs.getColumnIndex(DBstring.F_FOOD_NAME)));
+//
+//            tvSearchTitle.setText("Cibi trovati:");
+//            refreshListView();
+//        }
+//    }
 
     @Override
     public void onBackPressed() {

@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -137,19 +138,21 @@ public class SearchActivity extends AppCompatActivity {
             public void bindView(View view, Context context, Cursor crs) {
                 final TextView tvFoodName;
                 Button btnInfo;
-                ImageView imgSafe, imgToxoplasmosi, imgListeriosi;
+                ImageView imgSafe, imgToxoplasmosi, imgListeriosi, imgSalmonellosi;
 
                 tvFoodName = view.findViewById(R.id.tvFoodName);
                 btnInfo = view.findViewById(R.id.btnInfo);
                 imgSafe = view.findViewById(R.id.imgSafe);
                 imgToxoplasmosi = view.findViewById(R.id.imgToxoplasmosi);
                 imgListeriosi = view.findViewById(R.id.imgListeriosi);
+                imgSalmonellosi = view.findViewById(R.id.imgSalmonellosi);
 
                 int f_toxo = crs.getInt(crs.getColumnIndex(DBstring.F_FOOD_TOXOPLASMOSI));
                 int f_safe = crs.getInt(crs.getColumnIndex(DBstring.F_FOOD_SAFE));
 
-//                Log.d("Kiwi", getClass().getSimpleName() + ": inserting food: " + crs.getString(crs.getColumnIndex(DBstring.F_FOOD_NAME)));
-//                Log.d("Kiwi", getClass().getSimpleName() + ": inserting food safety: " + crs.getInt(crs.getColumnIndex(DBstring.F_FOOD_SAFE)));
+                Log.d("Kiwi", getClass().getSimpleName() + ": inserting food: " + crs.getString(crs.getColumnIndex(DBstring.F_FOOD_NAME)));
+                Log.d("Kiwi", getClass().getSimpleName() + ": inserting food safety: " + crs.getInt(crs.getColumnIndex(DBstring.F_FOOD_SAFE)));
+                Log.d("Kiwi", getClass().getSimpleName() + ": inserting food salmonellosis: " + crs.getInt(crs.getColumnIndex(DBstring.F_FOOD_SALMONELLOSI)));
 
                 tvFoodName.setText("" + crs.getString(crs.getColumnIndex(DBstring.F_FOOD_NAME)));
 
@@ -168,13 +171,33 @@ public class SearchActivity extends AppCompatActivity {
                     imgToxoplasmosi.setVisibility(View.INVISIBLE);
 
                 if(crs.getInt(crs.getColumnIndex(DBstring.F_FOOD_LISTERIOSI)) == Food.POS) {
+//                    Log.d("kiwi", getClass().getSimpleName() + ": listeria present");
                     imgListeriosi.setVisibility(View.VISIBLE);
                     imgListeriosi.setBackground(ContextCompat.getDrawable(context, R.drawable.bacteria));
                 } else
                     imgListeriosi.setVisibility(View.INVISIBLE);
 
+                if(crs.getInt(crs.getColumnIndex(DBstring.F_FOOD_SALMONELLOSI)) == Food.POS) {
+//                    Log.d("kiwi", getClass().getSimpleName() + ": salmonellosis present");
+                    imgSalmonellosi.setVisibility(View.VISIBLE);
+                    imgSalmonellosi.setBackground(ContextCompat.getDrawable(context, R.drawable.bacteria_s));
+                } else
+                    imgSalmonellosi.setVisibility(View.INVISIBLE);
+
                 btnInfo.setTag(crs.getInt(crs.getColumnIndex(DBstring.F_FOOD_ID)));
 
+                //Open new intent with food information
+                btnInfo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.d("Kiwi", getClass().getSimpleName() + ": opening new intent for food: " + btnInfo.getTag());
+
+                        Intent i = new Intent(getApplicationContext(), FoodInformationActivity.class);
+                        i.putExtra("id", btnInfo.getTag().toString());
+                        i.putExtra("toxo", toxo);
+                        startActivity(i);
+                    }
+                });
             }
         };
 

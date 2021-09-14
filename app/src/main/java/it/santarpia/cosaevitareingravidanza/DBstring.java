@@ -6,6 +6,7 @@ class DBstring {
     public static final String F_FOOD_NAME = "food_name";
     public static final String F_FOOD_TOXOPLASMOSI = "food_toxoplasmosi";
     public static final String F_FOOD_LISTERIOSI = "food_listeriosi";
+    public static final String F_FOOD_SALMONELLOSI = "food_salmonellosi";
     public static final String F_FOOD_DESCRIPTION = "food_description";
     public static final String F_FOOD_SAFE = "food_safe";
     public static final String F_FOOD_CATEGORY = "food_category";

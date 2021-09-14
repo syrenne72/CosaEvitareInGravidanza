@@ -158,6 +158,45 @@ public class DBmanager {
     }
 
     /**
+     * Find food by id
+     * @param id id of the food
+     * @return food found, null otherwhise
+     */
+    public Food findFoodById(String id) {
+        Cursor crs = null;
+        Food food = null;
+
+        try {
+            SQLiteDatabase db = dbhelper.getReadableDatabase();
+            crs = db.query(DBstring.TBL_FOOD, null,
+                    DBstring.F_FOOD_ID + " = ?", new String[]{id},
+                    null, null, null, null);
+
+            if(crs != null && crs.moveToNext()) {
+                Log.d("kiwi", "Food found");
+
+                String name = crs.getString(crs.getColumnIndex(DBstring.F_FOOD_NAME));
+                String desc = crs.getString(crs.getColumnIndex(DBstring.F_FOOD_DESCRIPTION));
+                String cat = crs.getString(crs.getColumnIndex(DBstring.F_FOOD_CATEGORY));
+                int list = crs.getInt(crs.getColumnIndex(DBstring.F_FOOD_LISTERIOSI));
+                int toxo = crs.getInt(crs.getColumnIndex(DBstring.F_FOOD_TOXOPLASMOSI));
+                int salm = crs.getInt(crs.getColumnIndex(DBstring.F_FOOD_SALMONELLOSI));
+                int safe = crs.getInt(crs.getColumnIndex(DBstring.F_FOOD_SAFE));
+
+                food = new Food(name, desc, list, toxo, salm, safe, cat);
+
+                return food;
+            }
+        } catch(SQLiteException sqle) {
+            sqle.printStackTrace();
+        }
+
+        Log.d("kiwi", "No food found");
+
+        return null;
+    }
+
+    /**
      * Set toxoplasmosi's info
      * @param b 1 indicates the presence of toxoplasmosis antibodies, 0 otherwise
      */
@@ -186,6 +225,7 @@ public class DBmanager {
        cv.put(DBstring.F_FOOD_DESCRIPTION, food.getDescription());
        cv.put(DBstring.F_FOOD_TOXOPLASMOSI, food.getToxoplasmosi());
        cv.put(DBstring.F_FOOD_LISTERIOSI, food.getListeriosi());
+       cv.put(DBstring.F_FOOD_SALMONELLOSI, food.getSalmonellosi());
        cv.put(DBstring.F_FOOD_SAFE, food.getSafe());
        cv.put(DBstring.F_FOOD_CATEGORY, food.getCategory());
 

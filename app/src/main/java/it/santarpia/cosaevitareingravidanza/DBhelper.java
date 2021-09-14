@@ -25,6 +25,7 @@ class DBhelper extends SQLiteOpenHelper {
                 " ( _id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 DBstring.F_FOOD_TOXOPLASMOSI + " INT," +
                 DBstring.F_FOOD_LISTERIOSI + " INT," +
+                DBstring.F_FOOD_SALMONELLOSI + " INT," +
                 DBstring.F_FOOD_SAFE + " INT, " +
                 DBstring.F_FOOD_DESCRIPTION + " STRING," +
                 DBstring.F_FOOD_CATEGORY + " STRING," +

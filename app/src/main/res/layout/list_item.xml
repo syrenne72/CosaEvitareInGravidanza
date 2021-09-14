@@ -29,6 +29,14 @@
         android:id="@+id/imgListeriosi"
         android:background="@drawable/bacteria"/>
 
+    <ImageView
+        android:layout_width="@dimen/i_food"
+        android:layout_height="@dimen/i_food"
+        android:layout_marginLeft="@dimen/m_left_list"
+        android:layout_gravity="center"
+        android:id="@+id/imgSalmonellosi"
+        android:background="@drawable/bacteria_s"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
